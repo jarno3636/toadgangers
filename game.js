@@ -1,3 +1,10 @@
+let gameStarted = false;
+
+function startGame() {
+  document.getElementById('start-screen').style.display = 'none';
+  gameStarted = true;
+  init(); // or main game loop function
+}
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
