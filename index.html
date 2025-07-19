@@ -2,48 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Toadgangers</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-  <style>
-  #start-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0e1a23ee;
-    color: white;
-    text-align: center;
-    padding-top: 120px;
-    font-family: 'Courier New', monospace;
-    z-index: 10;
-  }
-
-  #start-screen button {
-    padding: 12px 24px;
-    font-size: 18px;
-    background: #3ff0ff;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
-</style>
 <body>
-  <div id="score">Score: 0</div>
   <div id="start-screen">
-  <h1>🐸 Welcome to Toadgangers!</h1>
-  <p>
-    Help the blue frog collect tokens: <br>
-    🟥 $PATIENCE, 🟦 $TOBY, 🟩 $TABOSHI, 🌀 SatobySwap. <br><br>
-    Avoid falling into the water. <br>
-    Your goal: Collect as many tokens as you can before time runs out!
-  </p>
-  <button onclick="startGame()">Start Game</button>
-</div>
-  <canvas id="game" width="320" height="480"></canvas>
-  <button id="share" style="display:none;">Share Score</button>
+    <h1>🐸 Toadgangers</h1>
+    <p>Welcome to Toadgangers — the pixel frog survival game!</p>
+    <ul>
+      <li>🎯 Objective: Help the blue frog land on lily pads to collect tokens</li>
+      <li>💠 Collect $TOBY (blue frog), $PATIENCE (red triangle), $TABOSHI (green leaf), SatobySwap (blue swirl)</li>
+      <li>🏆 Earn score and climb the daily & all-time leaderboards!</li>
+      <li>📣 Share your score on Farcaster!</li>
+    </ul>
+    <button id="start-btn">Start Game</button>
+    <button id="lore-btn">Lore & Tokens</button>
+  </div>
+
+  <canvas id="gameCanvas" width="360" height="640"></canvas>
+
+  <div id="lore-screen" style="display: none;">
+    <h2>📜 Tobyworld Lore & Tokens</h2>
+    <p>Explore the magical world of Toadgod:</p>
+    <ul>
+      <li><strong>$TOBY</strong>: Blue Frog spirit — symbol of mischief and prophecy.</li>
+      <li><strong>$PATIENCE</strong>: Red Triangle — earned through calm, hard to get.</li>
+      <li><strong>$TABOSHI</strong>: Green Leaf — abundant but useful when bound to $TOBY.</li>
+      <li><strong>SatobySwap</strong>: Blue Swirl — gateway to exchanges and rituals.</li>
+    </ul>
+    <p>Learn more at <a href="https://toadgod.xyz" target="_blank">toadgod.xyz</a></p>
+    <button id="back-btn">⬅ Back</button>
+  </div>
 
   <script src="game.js"></script>
 </body>
