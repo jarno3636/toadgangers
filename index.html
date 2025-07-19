@@ -5,8 +5,43 @@
   <title>Toadgangers</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+  <style>
+  #start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0e1a23ee;
+    color: white;
+    text-align: center;
+    padding-top: 120px;
+    font-family: 'Courier New', monospace;
+    z-index: 10;
+  }
+
+  #start-screen button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background: #3ff0ff;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+</style>
 <body>
   <div id="score">Score: 0</div>
+  <div id="start-screen">
+  <h1>🐸 Welcome to Toadgangers!</h1>
+  <p>
+    Help the blue frog collect tokens: <br>
+    🟥 $PATIENCE, 🟦 $TOBY, 🟩 $TABOSHI, 🌀 SatobySwap. <br><br>
+    Avoid falling into the water. <br>
+    Your goal: Collect as many tokens as you can before time runs out!
+  </p>
+  <button onclick="startGame()">Start Game</button>
+</div>
   <canvas id="game" width="320" height="480"></canvas>
   <button id="share" style="display:none;">Share Score</button>
 
