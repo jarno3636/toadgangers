@@ -2,39 +2,299 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toadgangers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐸 Toad Jumpers - Pixel Frog Adventure Game</title>
+
+  <!-- Farcaster Frame Meta Tags -->
+  <meta property="fc:frame" content="vNext" />
+  <meta property="fc:frame:image" content="https://toadjumpers.replit.app/frame-image.png" />
+  <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
+  <meta property="fc:frame:button:1" content="🎮 Play Game" />
+  <meta property="fc:frame:button:1:action" content="post" />
+  <meta property="fc:frame:button:2" content="🎯 Daily Challenge" />
+  <meta property="fc:frame:button:2:action" content="post" />
+  <meta property="fc:frame:button:3" content="🏆 Leaderboard" />
+  <meta property="fc:frame:button:3:action" content="post" />
+  <meta property="fc:frame:button:4" content="👥 Invite Friends" />
+  <meta property="fc:frame:button:4:action" content="post" />
+  <meta property="fc:frame:post_url" content="https://toadjumpers.replit.app/frame-action" />
+  <meta property="fc:frame:input:text" content="Share your thoughts on the pond!" />
+  <meta property="og:title" content="🐸 Toad Jumpers - Pixel Frog Adventure" />
+  <meta property="og:description" content="Help the blue frog survive lily pad challenges! Collect TOBY tokens, compete for high scores, and join daily challenges in this pixel perfect adventure!" />
+  <meta property="og:image" content="https://toadjumpers.replit.app/frame-image.png" />
+  <meta property="og:url" content="https://toadjumpers.replit.app" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="🐸 Toad Jumpers - Pixel Frog Adventure" />
+  <meta name="twitter:description" content="Help the blue frog survive lily pad challenges! Collect tokens, compete for scores!" />
+  <meta name="twitter:image" content="https://toadjumpers.replit.app/frame-image.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Tip Button (floating) -->
+  <button id="tip-btn" class="tip-floating">💸 Tip the Frog</button>
+
+  <!-- Wallet Connection -->
+  <div id="wallet-section" class="wallet-floating">
+    <button id="connect-wallet-btn">🔗 Connect Wallet</button>
+    <div id="wallet-info" style="display: none;">
+      <span id="wallet-address">0x...</span>
+      <div id="token-balance">🪙 0 TOBY</div>
+    </div>
+  </div>
+
+  <!-- Start Screen -->
   <div id="start-screen">
-    <h1>🐸 Toadgangers</h1>
-    <p>Welcome to Toadgangers — the pixel frog survival game!</p>
+    <h1>🐸 Toad Jumpers</h1>
+    <div id="daily-challenge-banner" class="challenge-banner">
+      <h3>🎯 Today's Challenge</h3>
+      <p id="challenge-description">Collect 50 tokens in under 2 minutes!</p>
+      <div id="challenge-reward">Reward: 13 TOBY tokens</div>
+    </div>
+    <p>Welcome to Toad Jumpers — the pixel frog survival game!</p>
     <ul>
-      <li>🎯 Objective: Help the blue frog land on lily pads to collect tokens</li>
-      <li>💠 Collect $TOBY (blue frog), $PATIENCE (red triangle), $TABOSHI (green leaf), SatobySwap (blue swirl)</li>
-      <li>🏆 Earn score and climb the daily & all-time leaderboards!</li>
+      <li>🎯 Objective: Help the blue frog jump between lily pads and survive!</li>
+      <li>🎮 Controls: Space/Up Arrow to jump, A/D or Left/Right arrows to move</li>
+      <li>📱 Mobile: Tap screen to jump, swipe left/right to move</li>
+      <li>💠 Collect tokens: $TOBY (blue circle), $PATIENCE (red triangle), $TABOSHI (green leaf), SatobySwap (blue swirl)</li>
+      <li>🏆 Score points and survive as long as possible!</li>
       <li>📣 Share your score on Farcaster!</li>
+      <li>🎨 Unlock frog skins and special abilities!</li>
     </ul>
     <button id="start-btn">Start Game</button>
-    <button id="lore-btn">Lore & Tokens</button>
+    <button id="daily-challenge-btn">🎯 Daily Challenge</button>
+    <button id="lore-btn">📜 Lore</button>
+    <button id="leaderboard-btn">🏆 Leaderboard</button>
+    <button id="upgrades-btn">⬆️ Upgrades</button>
+    <button id="sound-toggle-btn" class="sound-toggle">🔊 Sound: ON</button>
   </div>
 
+  <!-- Game Canvas -->
   <canvas id="gameCanvas" width="360" height="640"></canvas>
 
-  <div id="lore-screen" style="display: none;">
-    <h2>📜 Tobyworld Lore & Tokens</h2>
-    <p>Explore the magical world of Toadgod:</p>
-    <ul>
-      <li><strong>$TOBY</strong>: Blue Frog spirit — symbol of mischief and prophecy.</li>
-      <li><strong>$PATIENCE</strong>: Red Triangle — earned through calm, hard to get.</li>
-      <li><strong>$TABOSHI</strong>: Green Leaf — abundant but useful when bound to $TOBY.</li>
-      <li><strong>SatobySwap</strong>: Blue Swirl — gateway to exchanges and rituals.</li>
-    </ul>
-    <p>Learn more at <a href="https://toadgod.xyz" target="_blank">toadgod.xyz</a></p>
-    <button id="back-btn">⬅ Back</button>
+  <!-- Game Over Screen -->
+  <div id="game-over-screen" style="display: none;">
+    <div class="game-over-content">
+      <h2>🐸 Game Over!</h2>
+      <p id="final-score">Final Score: 0</p>
+      <p id="final-time">Time Survived: 0s</p>
+      <div class="name-input">
+        <label for="player-name">Enter your name:</label>
+        <input type="text" id="player-name" maxlength="20" placeholder="Toad Master">
+        <button id="save-score-btn">Save Score</button>
+      </div>
+      <div class="share-buttons">
+        <button id="share-farcaster-btn">📤 Share to Farcaster</button>
+        <button id="restart-btn">🔄 Play Again</button>
+        <button id="back-to-main-btn">⬅ Back to Main</button>
+      </div>
+    </div>
   </div>
 
+  <!-- Lore Screen -->
+  <div id="lore-screen" style="display: none;">
+    <div class="lore-content">
+      <h2>📜 Ancient Scrolls of Toadgod</h2>
+      <div id="scroll-container">
+        <div class="scroll active" data-scroll="0">
+          <div class="scroll-symbol">🐸</div>
+          <h3>The Legend of $TOBY</h3>
+          <div class="scroll-text-box">
+            <p>In the primordial swamps of the digital realm, $TOBY emerged as the first blue frog spirit. A symbol of mischief and prophecy, $TOBY guides lost souls through the lily pad dimensions.</p>
+            <p>Learn more about the Toadgod universe:</p>
+            <a href="#" class="external-link" data-url="https://toadgod.xyz">🌐 Visit Toadgod.xyz</a>
+          </div>
+        </div>
+        <div class="scroll" data-scroll="1">
+          <div class="scroll-symbol">🔺</div>
+          <h3>The Virtue of $PATIENCE</h3>
+          <div class="scroll-text-box">
+            <p>The red triangle of patience burns eternal in the hearts of true believers. Earned only through calm meditation and unwavering faith, $PATIENCE rewards those who endure.</p>
+            <p>Discover the mysteries of the toadgod realm:</p>
+            <a href="#" class="external-link" data-url="https://toadgod.xyz">🌐 Explore Toadgod Universe</a>
+          </div>
+        </div>
+        <div class="scroll" data-scroll="2">
+          <div class="scroll-symbol">🍃</div>
+          <h3>The Abundance of $TABOSHI</h3>
+          <div class="scroll-text-box">
+            <p>Green leaves of $TABOSHI grow abundantly in the sacred groves. When bound to $TOBY's spirit, they unlock ancient powers and mysteries of the toadgod realm.</p>
+            <p>Enter the sacred digital sanctuary:</p>
+            <a href="#" class="external-link" data-url="https://toadgod.xyz">🏛️ Visit Toadgod Temple</a>
+          </div>
+        </div>
+        <div class="scroll" data-scroll="3">
+          <div class="scroll-symbol">🌀</div>
+          <h3>The Gateway of SatobySwap</h3>
+          <div class="scroll-text-box">
+            <p>The blue swirl serves as the mystical gateway between realms. Through its power, spirits exchange energies and perform sacred rituals of transformation in the ancient toadgod universe.</p>
+            <p>This mystical energy flows through all dimensions of the realm, connecting all spirits in the eternal pond of wisdom.</p>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-navigation">
+        <button id="prev-scroll">⬅ Previous</button>
+        <span id="scroll-indicator">1 / 4</span>
+        <button id="next-scroll">Next ➡</button>
+      </div>
+      <button id="back-from-lore-btn">⬅ Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Leaderboard Screen -->
+  <div id="leaderboard-screen" style="display: none;">
+    <div class="leaderboard-content">
+      <h2>🏆 Leaderboard</h2>
+      <div class="leaderboard-tabs">
+        <button class="tab-btn active" data-tab="daily">📅 Daily</button>
+        <button class="tab-btn" data-tab="alltime">🌟 All-Time</button>
+      </div>
+      <div id="leaderboard-list">
+        <!-- Leaderboard entries will be populated by JavaScript -->
+      </div>
+      <button id="back-from-leaderboard-btn">⬅ Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Upgrades Screen -->
+  <div id="upgrades-screen" style="display: none;">
+    <div class="upgrades-content">
+      <h2>⬆️ Upgrades & Skins</h2>
+      <div class="player-stats">
+        <div>🪙 TOBY Tokens: <span id="player-tokens">0</span></div>
+        <div>🏆 Total Score: <span id="player-total-score">0</span></div>
+      </div>
+
+      <div class="upgrade-categories">
+        <div class="upgrade-category">
+          <h3>🐸 Frog Skins</h3>
+          <div class="upgrade-grid" id="frog-skins">
+            <div class="upgrade-item" data-skin="default">
+              <div class="skin-preview default-skin">🐸</div>
+              <div class="skin-name">Classic Blue</div>
+              <div class="skin-price">FREE</div>
+            </div>
+            <div class="upgrade-item" data-skin="golden">
+              <div class="skin-preview golden-skin">🟡</div>
+              <div class="skin-name">Golden Toad</div>
+              <div class="skin-price">500 TOBY</div>
+            </div>
+            <div class="upgrade-item" data-skin="rainbow">
+              <div class="skin-preview rainbow-skin">🌈</div>
+              <div class="skin-name">Rainbow Frog</div>
+              <div class="skin-price">1000 TOBY</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="upgrade-category">
+          <h3>⚡ Power-ups</h3>
+          <div class="upgrade-grid" id="powerups">
+            <div class="upgrade-item" data-upgrade="jump">
+              <div class="upgrade-icon">⬆️</div>
+              <div class="upgrade-name">Super Jump</div>
+              <div class="upgrade-description">+50% jump height</div>
+              <div class="upgrade-price">400 TOBY</div>
+            </div>
+            <div class="upgrade-item" data-upgrade="speed">
+              <div class="upgrade-icon">⚡</div>
+              <div class="upgrade-name">Speed Boost</div>
+              <div class="upgrade-description">+30% movement speed</div>
+              <div class="upgrade-price">600 TOBY</div>
+            </div>
+            <div class="upgrade-item" data-upgrade="magnet">
+              <div class="upgrade-icon">🧲</div>
+              <div class="upgrade-name">Token Magnet</div>
+              <div class="upgrade-description">Auto-collect nearby tokens</div>
+              <div class="upgrade-price">1600 TOBY</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="back-from-upgrades-btn">⬅ Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Tip Modal -->
+  <div id="tip-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" title="Close">&times;</span>
+      <h3>💸 Support the Pond</h3>
+      <p>Choose your preferred tipping method:</p>
+      <div id="tip-options">
+        <!-- Tip options will be populated by JavaScript -->
+      </div>
+      <div class="qr-section">
+        <p>QR Code:</p>
+        <div id="qr-code">
+          <div class="qr-placeholder">QR Code Available Soon</div>
+        </div>
+      </div>
+      <button class="close-modal-btn" onclick="document.getElementById('tip-modal').style.display='none'">
+        ⬅ Back to Game
+      </button>
+    </div>
+  </div>
+
+  <!-- Tutorial Overlay -->
+  <div id="tutorial-overlay" class="tutorial-overlay" style="display: none;">
+    <div class="tutorial-content">
+      <h3>🐸 Welcome to Toad Jumpers!</h3>
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <div class="tutorial-icon">🎮</div>
+          <p>Jump between lily pads and collect tokens!</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-icon">💰</div>
+          <p>Earn TOBY tokens for playing and completing challenges!</p>
+        </div>
+        <div class="tutorial-step">
+          <div class="tutorial-icon">🔗</div>
+          <p>Connect your Farcaster wallet to save progress!</p>
+        </div>
+      </div>
+      <button id="close-tutorial" class="tutorial-close-btn">Start Playing! 🚀</button>
+    </div>
+  </div>
+
+  <!-- Farcaster Modal -->
+  <div id="farcaster-modal" class="modal" style="display: none;">
+    <div class="modal-content farcaster-modal-content">
+      <span class="close" onclick="document.getElementById('farcaster-modal').style.display='none'">&times;</span>
+      <h3>📤 Share to Farcaster</h3>
+      <div class="cast-preview">
+        <h4>Cast Preview:</h4>
+        <div class="cast-text"></div>
+        <div class="score-image-preview"></div>
+      </div>
+      <div class="share-options">
+        <button class="farcaster-share-btn">🟣 Post to Warpcast</button>
+        <button class="copy-cast-btn">📋 Copy Cast Text</button>
+        <button class="download-image-btn">💾 Download Image</button>
+      </div>
+      <div class="challenge-info">
+        <h3>🎯 Daily Challenge</h3>
+        <p id="challenge-description">Loading challenge...</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="challenge-progress" style="width: 0%"></div>
+        </div>
+        <p id="challenge-reward">Calculating reward...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="error-handler.js"></script>
+  <script src="web3.js"></script>
+  <script src="upgrades.js"></script>
+  <script src="challenges.js"></script>
+  <script src="lore.js"></script>
+  <script src="tip.js"></script>
+  <script src="frame-handler.js"></script>
+  <script src="social-features.js"></script>
+  <script src="farcaster.js"></script>
+  <script src="frame-api.js"></script>
   <script src="game.js"></script>
+  <script src="debug.js"></script>
 </body>
 </html>
